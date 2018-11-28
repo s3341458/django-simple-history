@@ -356,7 +356,7 @@ class HistoricalRecords(object):
             self.create_historical_record(instance, "-")
 
     def create_historical_record(self, instance, history_type):
-        history_date = getattr(instance, "_history_date", now())
+        history_date = self.get_history_date(instance)
         history_user = self.get_history_user(instance)
         history_change_reason = getattr(instance, "changeReason", None)
         manager = getattr(instance, self.manager_name)
@@ -406,6 +406,10 @@ class HistoricalRecords(object):
                 pass
 
         return self.get_user(instance=instance, request=request)
+
+    def get_history_date(self, instance):
+        """ Get the date for current history record """
+        return getattr(instance, "_history_date", now())
 
 
 def transform_field(field):
